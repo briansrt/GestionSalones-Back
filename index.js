@@ -12,7 +12,7 @@ app.use(urlencoded({extended: true}))
 app.use(json())
 
 app.use(cors())
-app.use('/salones', salonRoutes);
+app.use('/javeriana', salonRoutes);
 
 app.get('/', (req, res) => {
     res.send('¡Hola, mundo!');
