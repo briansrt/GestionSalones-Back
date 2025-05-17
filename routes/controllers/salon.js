@@ -1,4 +1,4 @@
-const pool = require("../../db/mongo");
+const getClient = require("../../db/mongo");
 const { OpenAI } = require("openai");
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -7,9 +7,10 @@ const openai = new OpenAI({
 //---------------Login---------------------
 
 const getInfo = async (req, res) => {
+  const client = await getClient();
   const datos = req.body;
   try {
-    const result = await pool
+    const result = await client
       .db("javeriana")
       .collection("salones")
       .aggregate([
@@ -67,8 +68,9 @@ const getInfo = async (req, res) => {
 };
 
 const GetAllSalones = async (req, res) => {
+  const client = await getClient();
   try {
-    const salones = await pool
+    const salones = await client
       .db("javeriana")
       .collection("salones")
       .aggregate([
@@ -98,7 +100,6 @@ const GetAllSalones = async (req, res) => {
 
 const chatbot = async (req, res) => {
   const datos = req.body;
-  //console.log("LOGIN: ", datos);
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
