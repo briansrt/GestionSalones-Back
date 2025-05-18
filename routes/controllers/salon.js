@@ -100,22 +100,6 @@ const GetAllSalones = async (req, res) => {
 
 const chatbot = async (req, res) => {
   const datos = req.body;
-  const salonesTexto = datos.salon.salones.map((s) => {
-  return `
-    Salón: ${s.salon}
-    Capacidad: ${s.capacidad}
-    Edificio: ${s.edificio_info?.[0]?.edificio || 'Desconocido'}
-    Tipo de Aula: ${s.tipoaula}
-    Tipo de Silla: ${s["Tipo de silla"] || 'N/A'}
-    Tipo de Mesa: ${s.tipomesa || 'N/A'}
-    Tipo de Tablero: ${s.tipotablero || 'N/A'}
-    Movilidad: ${s.movilidad || 'N/A'}
-    Tomacorriente: ${s.tomacorriente || 'N/A'}
-    Equipamiento: ${s.equipamientotecnologico || 'N/A'}
-    Piso: ${s.piso}
-    `;
-  }).join('\n');
-  console.log("salonesTexto", salonesTexto);
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -158,7 +142,7 @@ Ejemplo de formato correcto:
           content:
             datos.pregunta +
             "\n\nSalones disponibles:\n" +
-            salonesTexto
+            JSON.stringify(datos.salon, null, 2),
         },
       ],
       max_tokens: 400,
