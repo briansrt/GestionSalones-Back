@@ -115,7 +115,7 @@ const chatbot = async (req, res) => {
     Piso: ${s.piso}
     `;
   }).join('\n');
-
+  console.log("salonesTexto", salonesTexto);
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
